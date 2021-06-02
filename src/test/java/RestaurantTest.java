@@ -5,6 +5,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -51,6 +52,44 @@ class RestaurantTest {
         Mockito.verify(spyRestaurant).getCurrentTime();
     }
     //<<<<<<<<<<<<<<<<<<<<<<<<<OPEN/CLOSED>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
+    //>>>>>>>>>>>>>>>>>>>>>>Calculate Order Total<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    @Test
+    public void returns_accurate_cost_after_adding_one_or_more_items() {
+        //Arrange
+        String item1Name = "Sweet corn soup";
+        int item1Price = 119;
+        String item2Name = "Vegetable lasagne";
+        int item2Price = 269;
+        restaurant.addToMenu(item1Name,item1Price);
+        restaurant.addToMenu(item2Name, item2Price);
+
+        ArrayList<String> itemsAdded = new ArrayList<>();
+        itemsAdded.add(item1Name);
+        itemsAdded.add(item2Name);
+
+        //Act
+        Integer expectedCost = item1Price+item2Price;
+        Integer actualCost = restaurant.calculateOrderTotal(itemsAdded);
+
+        //Assert
+        assertEquals(expectedCost, actualCost);
+
+    }
+
+    @Test
+    public void returns_total_cost_as_zero_when_there_are_zero_items_in_the_cart() {
+        //Arrange
+        ArrayList<String> itemsAdded = new ArrayList<>();
+
+        //Act
+        Integer actualCost = restaurant.calculateOrderTotal(itemsAdded);
+
+        //Assert
+        assertEquals(0, actualCost);
+    }
+    //<<<<<<<<<<<<<<<<<<<<Calculate Order Total>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
     //>>>>>>>>>>>>>>>>>>>>>>>>>>>MENU<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
